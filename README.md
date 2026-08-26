@@ -4,7 +4,7 @@ This repository contains a modular reconnaissance toolkit built in stages. The p
 
 ## Current status
 
-The main branch now contains the complete integrated project after merging the six module branches.
+The main branch contains the integrated reconnaissance project after merging the completed feature branches.
 
 ## Included modules
 
