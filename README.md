@@ -1,34 +1,46 @@
 # 2nd_recon_tool
 
-This repository is currently implementing the third planned feature branch: `feature/port-scanner`.
+This repository contains a modular reconnaissance toolkit built in stages. The project includes DNS/WHOIS lookups, passive subdomain discovery, active port scanning, banner grabbing, HTTP technology detection, report generation, and a final CLI/logging layer.
 
-## Current functionality
+## Current status
 
-The project now includes a lightweight TCP port scanner for a user-supplied hostname or IP address. It validates the target, scans common ports by default, and reports which ones are open while handling refusal and timeout conditions gracefully.
+The main branch now contains the complete integrated project after merging the six module branches.
 
-Included behaviors:
+## Included modules
 
-- Target validation for domains and IP addresses
-- Default scanning of common reconnaissance ports
-- Optional custom port or port-range input
-- Timeout handling for slow or filtered services
-- Structured results for open and closed ports
-- Graceful error messaging for invalid targets and DNS failures
+- WHOIS + DNS enumeration
+- Passive subdomain discovery
+- Port scanning
+- Banner grabbing and technology detection
+- Report generation
+- Final CLI and logging
 
 ## Project structure
 
 ```text
 recon-tool/
 ├── README.md
-├── requirements.txt
+├── main.py
 ├── plan.md
+├── requirements.txt
+├── report.txt
 ├── recon/
 │   ├── __init__.py
+│   ├── banner_tech.py
+│   ├── logger.py
 │   ├── port_scanner.py
-│   └── subdomains.py
+│   ├── reporting.py
+│   ├── subdomains.py
+│   └── whois_dns.py
+├── reports/
+│   └── google_report.txt
 └── tests/
+    ├── test_banner_tech.py
+    ├── test_cli_logging.py
     ├── test_port_scanner.py
-    └── test_subdomains.py
+    ├── test_reporting.py
+    ├── test_subdomains.py
+    └── test_whois_dns.py
 ```
 
 ## Installation
@@ -39,32 +51,29 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## Example usage
+## Running the project
 
-### Run directly from the terminal
+From the repository root, use the CLI:
 
 ```powershell
 cd C:\Users\hassan\Documents\GitHub\2nd_recon_tool
-python .\recon\port_scanner.py --target google.com --ports 80 443
+python .\main.py --domain google.com --dns
+python .\main.py --target google.com --ports 80 443
+python .\main.py --target google.com --banner
 ```
 
-Or use the interactive prompt:
+You can also run individual modules directly:
 
 ```powershell
+python .\recon\whois_dns.py
+python .\recon\subdomains.py
 python .\recon\port_scanner.py
-```
-
-### Use the module in Python
-
-```python
-from recon.port_scanner import scan_ports
-
-result = scan_ports("google.com", ports=[80, 443], timeout=1.0)
-print(result)
+python .\recon\banner_tech.py
+python .\recon\reporting.py
 ```
 
 ## Notes
 
-- The target must be supplied by the user.
-- No domain is hard-coded in the module.
-- This branch intentionally covers only the port scanning portion of the final project.
+- Targets are user-supplied and not hard-coded.
+- The modules are designed to work independently, and the final CLI brings them together.
+- This repository is intended for demonstration and educational reconnaissance workflows.
