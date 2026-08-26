@@ -60,6 +60,7 @@ cd C:\Users\hassan\Documents\GitHub\2nd_recon_tool
 python .\main.py --domain google.com --dns
 python .\main.py --target google.com --ports 80 443
 python .\main.py --target google.com --banner
+python .\main.py --domain google.com --all --verbose
 ```
 
 You can also run individual modules directly:
