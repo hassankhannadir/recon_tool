@@ -190,6 +190,85 @@ def _run_selected_modules(args: argparse.Namespace, logger: logging.Logger) -> D
     return results
 
 
+def _print_module_result(name: str, payload: Dict[str, Any]) -> None:
+    """Print a human-readable summary for a module result."""
+    print(f"\n=== {name.upper()} ===")
+    if not isinstance(payload, dict):
+        print(payload)
+        return
+
+    status = payload.get("status", "unknown")
+    print(f"Status: {status}")
+
+    if payload.get("error"):
+        print(f"Error: {payload['error']}")
+        return
+
+    if name == "whois":
+        print(f"Target: {payload.get('target', 'N/A')}")
+        if payload.get("server"):
+            print(f"WHOIS server: {payload['server']}")
+        whois_text = payload.get("whois", "")
+        print(whois_text[:2000] + ("..." if len(whois_text) > 2000 else ""))
+        return
+
+    if name == "dns":
+        print(f"Target: {payload.get('target', 'N/A')}")
+        records = payload.get("records", {})
+        for record_type in ("A", "MX", "TXT", "NS"):
+            values = records.get(record_type, [])
+            if values:
+                print(f"{record_type}: {', '.join(values)}")
+        return
+
+    if name == "subdomains":
+        print(f"Target: {payload.get('target', 'N/A')}")
+        subdomains = payload.get("subdomains", [])
+        if subdomains:
+            print(f"Discovered subdomains ({len(subdomains)}):")
+            for item in subdomains:
+                print(f"  - {item}")
+        else:
+            print("No subdomains were discovered.")
+        errors = payload.get("errors", [])
+        if errors:
+            print("Warnings:")
+            for item in errors:
+                print(f"  - {item}")
+        return
+
+    if name == "ports":
+        print(f"Target: {payload.get('target', 'N/A')}")
+        print(f"Scanned ports: {payload.get('scanned_ports', [])}")
+        print(f"Open ports: {payload.get('open_ports', [])}")
+        print(f"Closed ports: {payload.get('closed_ports', [])}")
+        return
+
+    if name == "banner":
+        print(f"Host: {payload.get('host', 'N/A')}")
+        print(f"Port: {payload.get('port', 'N/A')}")
+        banner = payload.get("banner", "")
+        if banner:
+            print(f"Banner: {banner}")
+        else:
+            print("Banner: <no banner returned>")
+        return
+
+    if name == "tech":
+        print(f"URL: {payload.get('url', 'N/A')}")
+        technologies = payload.get("technologies", [])
+        if technologies:
+            print("Detected technologies: " + ", ".join(technologies))
+        else:
+            print("Detected technologies: none")
+        return
+
+    for key, value in payload.items():
+        if key == "status":
+            continue
+        print(f"{key}: {value}")
+
+
 def configure_parser() -> argparse.ArgumentParser:
     """Construct the command-line parser for the final application."""
     parser = argparse.ArgumentParser(description="Reconnaissance CLI")
@@ -235,10 +314,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         print(f"Target: {results.get('target', 'N/A')}")
         for name, payload in results.get("modules", {}).items():
-            status = payload.get("status", "unknown") if isinstance(payload, dict) else "unknown"
-            print(f"[{name}] {status}")
-            if logger.level <= logging.DEBUG:
-                print(json.dumps(payload, indent=2, sort_keys=True))
+            _print_module_result(name, payload)
 
     if args.report:
         report_path = Path(args.report)

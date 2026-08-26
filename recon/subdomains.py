@@ -79,7 +79,13 @@ def _parse_crtsh(raw: str) -> List[str]:
 
 
 def _parse_hackertarget(raw: str) -> List[str]:
-    return [line.strip() for line in raw.splitlines() if line.strip() and not line.startswith("#")]
+    domains: List[str] = []
+    for line in raw.splitlines():
+        clean = line.strip()
+        if not clean or clean.startswith("#"):
+            continue
+        domains.extend(re.findall(r"(?:[A-Za-z0-9-]+\.)+[A-Za-z]{2,63}", clean))
+    return domains
 
 
 def _parse_bufferover(raw: str) -> List[str]:
