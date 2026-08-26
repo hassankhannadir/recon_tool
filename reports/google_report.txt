@@ -1,0 +1,35 @@
+========================================
+RECONNAISSANCE REPORT
+========================================
+
+Target: google.com
+Timestamp: 2026-08-26 07:51:08 UTC
+
+IP Resolution:
+    IPv4: ['N/A']
+    IPv6: ['N/A']
+
+WHOIS:
+    {'status': 'not_run'}
+
+DNS:
+    A: ['N/A']
+    MX: ['N/A']
+    TXT: ['N/A']
+    NS: ['N/A']
+
+Subdomains:
+    None
+
+Open Ports:
+    None
+
+Service Banners:
+    None
+
+Detected Technologies:
+    None
+
+========================================
+END OF REPORT
+========================================
