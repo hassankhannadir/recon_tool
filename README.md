@@ -56,7 +56,7 @@ pip install -r requirements.txt
 From the repository root, use the CLI:
 
 ```powershell
-cd C:\Users\hassan\Documents\GitHub\2nd_recon_tool
+cd C:\Users\hassan\Documents\GitHub\recon_tool
 python .\main.py --domain google.com --dns
 python .\main.py --target google.com --ports 80 443
 python .\main.py --target google.com --banner
