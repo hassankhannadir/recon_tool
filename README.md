@@ -1,4 +1,4 @@
-# 2nd_recon_tool
+# recon_tool
 
 This repository contains a modular reconnaissance toolkit built in stages. The project includes DNS/WHOIS lookups, passive subdomain discovery, active port scanning, banner grabbing, HTTP technology detection, report generation, and a final CLI/logging layer.
 
